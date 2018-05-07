@@ -4,6 +4,7 @@
     "max-line-length": {
       "options": [120]
     },
+    "no-unused-variable": true,
     "indent": [true, "spaces", 2],
     "typedef": [
       true,
