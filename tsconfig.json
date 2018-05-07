@@ -1,0 +1,16 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "allowJs": true,
+    "module": "ES6",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es2015", "dom"],
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "jsx": "react"
+  }
+}

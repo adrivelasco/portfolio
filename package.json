@@ -1,0 +1,45 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://adrivelasco@github.com/adrivelasco/portfolio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adrivelasco/portfolio/issues"
+  },
+  "homepage": "https://github.com/adrivelasco/portfolio#readme",
+  "devDependencies": {
+    "@types/react": "^16.3.13",
+    "@types/react-dom": "^16.0.5",
+    "@types/react-redux": "^5.0.19"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "es6-promise": "^4.2.4",
+    "express": "^4.16.3",
+    "express-sanitized": "^0.5.1",
+    "express-session": "^1.15.6",
+    "fastclick": "^1.0.6",
+    "history": "^4.7.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
+    "redux-promise-middleware": "^5.1.1",
+    "redux-thunk": "^2.2.0",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.3.0",
+    "typescript": "^2.8.3",
+    "whatwg-fetch": "^2.0.4"
+  }
+}
