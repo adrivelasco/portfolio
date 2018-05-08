@@ -1,4 +1,5 @@
 import csmrh from 'css-modules-require-hook';
+
 import config from '../../config';
 
 csmrh({
