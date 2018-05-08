@@ -17,5 +17,9 @@
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,
     "jsx": "react"
-  }
+  },
+  "files": [
+    "./client/types/window.d.ts",
+    "./server/types/vendor.d.ts"
+  ]
 }
