@@ -2,9 +2,8 @@
 Personal website by **Adrián Velasco** from _Argentina, Buenos Aires_.
 
 ### Technologies & Features:
-- Node/Express: SSR
-- React.js
-- Redux
+- Node.js/Express
+- Universal React.js + Redux
 - TypeScript
 - Webpack 3
 - PostCSS
