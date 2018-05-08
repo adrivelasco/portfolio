@@ -1,10 +1,17 @@
 {
   "compileOnSave": false,
+  "include": [
+    "client/*.ts",
+    "server/*.ts",
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
     "noImplicitAny": true,
     "allowJs": true,
+    "target": "es6",
     "module": "commonjs",
-    "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es2015", "dom"],
