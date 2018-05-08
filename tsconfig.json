@@ -12,8 +12,6 @@
     "allowJs": true,
     "target": "es6",
     "module": "commonjs",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "lib": ["es2015", "dom"],
     "moduleResolution": "node",
     "sourceMap": true,

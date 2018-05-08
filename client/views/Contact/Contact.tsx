@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class Home extends React.Component {
+export class Contact extends React.Component {
   public render(): JSX.Element {
     return (
       <div>
@@ -10,4 +10,4 @@ export class Home extends React.Component {
   }
 }
 
-export default Home;
+export default Contact;

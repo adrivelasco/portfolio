@@ -1,6 +1,6 @@
-import nhf from 'node-hook-filename';
+import * as nhf from 'node-hook-filename';
 
 nhf([/\.jpg/, /\.png/, /\.svg/], (filename: string) => {
-  let name = filename.split('./')[1];
+  const name: string = filename.split('./')[1];
   return `/static/images/${name}`;
 });

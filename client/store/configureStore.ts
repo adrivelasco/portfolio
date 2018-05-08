@@ -1,37 +1,28 @@
 import { routerMiddleware } from 'react-router-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, Middleware, Store, GenericStoreEnhancer } from 'redux';
 import { History } from 'history';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 
-import rootReducer, { ApplicationState } from '../reducers';
+import rootReducer, { IApplicationState } from '../reducers';
 
 /**
  * Create and configure Redux store
  * @param {Object} initialState
  * @param {Object} history
- * 
+ *
  * @return {Object} Redux Store
  */
-function configureStore(initialState: ApplicationState, history?: History) {
-  const router = routerMiddleware(history);
+function configureStore(initialState: IApplicationState, history?: History): Store<IApplicationState> {
+  const router: Middleware = routerMiddleware(history);
 
   // Create the store with three middlewares
-  const middlewares = [promise(), thunk, router];
-  const enhancers = [
+  const middlewares: Middleware[] = [promise(), thunk, router];
+  const enhancers: GenericStoreEnhancer[] = [
     applyMiddleware(...middlewares)
   ];
 
-  // If Redux DevTools Extension is installed use it, otherwise use Redux compose
-  if (process.env.NODE_ENV === 'development') {
-    let devToolsExtension =
-      process.env.BROWSER && window.devToolsExtension
-        ? window.devToolsExtension()
-        : f => f;
-    enhancers.push(devToolsExtension);
-  }
-
-  const store = createStore(
+  const store: Store<IApplicationState> = createStore(
     rootReducer,
     initialState,
     compose(...enhancers)

@@ -2,25 +2,25 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Switch, Route } from 'react-router-dom';
 
-import ScrollToTop from './ScrollToTop';
+import views, { IRouteView } from '../views';
 import Layout from './Layout';
-import views, { View } from '../views';
+import ScrollToTop from './ScrollToTop';
 
 export const App: React.SFC = () => {
   return (
     <ScrollToTop>
-      <Route render={({ location, history }: RouteComponentProps<any>) => {
+      <Route render={({ location, history }: RouteComponentProps<React.ReactNode>) => {
         return (
           <Layout location={location} history={history}>
             <Switch>
-              {views.map((view: View, i: number) => {
+              {views.map((view: IRouteView, i: number) => {
                 return (
                   <Route
                     key={i}
                     path={view.path}
                     exact={view.exact}
                     pageName={view.title}
-                    render={(props: RouteComponentProps<any>) => 
+                    render={(props: RouteComponentProps<React.ReactNode>) =>
                       <view.component key={i} {...props} />}
                   />
                 );

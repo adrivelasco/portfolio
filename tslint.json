@@ -4,8 +4,10 @@
     "max-line-length": {
       "options": [120]
     },
+    "quotemark": [true, "single"],
     "no-unused-variable": true,
     "indent": [true, "spaces", 2],
+    "trailing-comma": false,
     "typedef": [
       true,
       "call-signature",
@@ -26,17 +28,11 @@
     "no-conditional-assigment": true,
     "no-consecutive-blank-lines": false,
     "object-literal-shorthand": false,
-    "no-console": {
-      "severity": "warning",
-      "options": [
-        "debug",
-        "info",
-        "log",
-        "time",
-        "timeEnd",
-        "trace"
-      ]
-    }
+    "no-console": false,
+    "ordered-imports": false,
+    "react/no-children-prop": 0,
+    "react/jsx-no-comment-textnodes": 0,
+    "no-use-before-define": "off"
   },
   "jsRules": {
     "max-line-length": {

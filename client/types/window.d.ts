@@ -1,6 +1,5 @@
-export interface Window {
-  APP_STATE?: any;
-  devToolsExtension?: any;
+interface Window {
+  APP_STATE: any;
 }
 
 declare var window: Window;

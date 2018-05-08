@@ -1,14 +1,16 @@
-interface IConfig {
-  app: {
-    title: string,
-    description: string
-  }
+export interface IConfigApp {
+  title: string;
+  description: string;
 }
 
-const config: IConfig = {
+export interface IConfig {
+  app: IConfigApp;
+}
+
+export const config: IConfig = {
   app: {
-    title: 'AV eCommerce',
-    description: 'Universal React App'
+    description: 'Universal React App',
+    title: 'AV eCommerce'
   }
 };
 

@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Location, History } from 'history';
 
-export interface LayoutProps {
+export interface ILayoutProps {
+  children: React.ReactNode;
   history: History;
   location: Location;
-  children: any; 
-};
+}
 
-export class Layout extends React.Component<LayoutProps> {
-  render() {
-    const { children } = this.props;
+export class Layout extends React.Component<ILayoutProps> {
+  public render(): JSX.Element {
+    const { children }: ILayoutProps = this.props;
     return (
       <div>
         <div>

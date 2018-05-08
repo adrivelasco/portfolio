@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { Location } from 'history';
 
-export interface ScrollToTopProps {
-  children: any,
-  location: Location
+export interface IScrollToTopProps {
+  children: React.ReactNode;
+  location: Location;
 }
 
-export class ScrollToTop extends React.Component<ScrollToTopProps> {
-  componentDidUpdate(prevProps: ScrollToTopProps) {
+export class ScrollToTop extends React.Component<RouteComponentProps<IScrollToTopProps>> {
+  public componentDidUpdate(prevProps: RouteComponentProps<IScrollToTopProps>): void {
     if (this.props.location !== prevProps.location) {
       window.scrollTo(0, 0);
     }
   }
-  
-  render() {
+
+  public render(): React.ReactNode {
     return this.props.children;
   }
 }
 
-export default withRouter<any>(ScrollToTop);
+export default withRouter(ScrollToTop);

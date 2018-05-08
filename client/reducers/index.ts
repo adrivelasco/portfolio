@@ -1,12 +1,12 @@
 import { combineReducers, Dispatch, Reducer } from 'redux';
 import { routerReducer, RouterState } from 'react-router-redux';
 
-export interface ApplicationState {
-  routing: RouterState
-};
+export interface IApplicationState {
+  routing?: RouterState;
+}
 
 // Creates the main reducer with the dynamically injected ones
-export const reducers: Reducer<ApplicationState> = combineReducers<ApplicationState>({
+export const reducers: Reducer<IApplicationState> = combineReducers<IApplicationState>({
   routing: routerReducer
 });
 
