@@ -4,7 +4,7 @@ export class Contact extends React.Component {
   public render(): React.ReactNode {
     return (
       <div>
-        Hello World! This is the homepage;
+        Hello World! This is the Contact page.
       </div>
     );
   }

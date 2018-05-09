@@ -5,7 +5,7 @@ export class Home extends React.Component {
   public render(): React.ReactNode {
     return (
       <div>
-        Hello World! This is the Homepage
+        Hello World! This is the Home page.
       </div>
     );
   }
