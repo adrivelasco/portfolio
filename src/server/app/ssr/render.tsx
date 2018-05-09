@@ -17,6 +17,8 @@ import assets from '../../build/assets.json';
 
 export interface IContext {
   store: Store<IApplicationState>;
+  url?: string,
+  status?: string
 }
 
 export interface IData {
@@ -26,6 +28,11 @@ export interface IData {
   state: IApplicationState;
   styles: string[];
   title: string;
+}
+
+export function renderHtml(markup: string, data: IData): string {
+  const html: string = ReactDOM.renderToStaticMarkup(<Html {...data}>{markup}</Html>);
+  return `<!doctype html>${html}`;
 }
 
 /**
@@ -53,16 +60,18 @@ export function renderClient(req: express.Request, res: express.Response, next: 
       status = 404;
     }
 
-    const html: string = ReactDOM.renderToStaticMarkup(
-      <Html {...data}>
+    const html: string = renderHtml(
+      ReactDOM.renderToString(
         <Provider store={store}>
           <StaticRouter location={req.originalUrl} context={context}>
             <App />
           </StaticRouter>
         </Provider>
-      </Html>
+      ),
+      data
     );
-    res.send(`<!doctype html>${html}`);
+
+    res.send(html);
 
   } catch (err) {
     next(err);
