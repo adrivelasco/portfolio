@@ -4,12 +4,14 @@
   "description": "Personal website",
   "scripts": {
     "clean": "shjs ./tools/scripts/clean.js",
-    "start-dev": "nodemon build/server/index.js",
-    "start": "node build/server/index.js",
-    "build:server-dev": "tsc -p ./src/server -w",
-    "build:server": "tsc -p ./src/server",
-    "build:client-dev": "npm run clean && webpack --config tools/webpack.config.js -w",
-    "build:client": "npm run clean && webpack --config tools/webpack.config.js"
+    "start:watch": "cross-env NODE_ENV=development nodemon build/server/index.js",
+    "start": "cross-env NODE_ENV=production node build/server/index.js",
+    "build-server:watch": "cross-env NODE_ENV=development tsc -w -p ./src/server",
+    "build-server": "cross-env NODE_ENV=production tsc -p ./src/server",
+    "build-client:watch": "cross-env NODE_ENV=development npm run clean && webpack --config tools/webpack.config.js -w",
+    "build-client": "cross-env NODE_ENV=production npm run clean && webpack --config tools/webpack.config.js --env.production",
+    "build:watch": "npm run build-client:watch & npm run build-server:watch",
+    "build": "npm run build:client && npm run build:server"
   },
   "repository": {
     "type": "git",

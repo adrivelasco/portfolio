@@ -23,15 +23,13 @@ npm install
   * Production mode
 
   ````bash
-  npm run build:client
-  npm run build:server
+  npm run build
   ````
 
   * Development mode
 
   ````bash
-  npm run build:client-dev
-  npm run build:server-dev
+  npm run build:watch
   ````
 
 3. Start server [localhost:3002]
@@ -45,7 +43,7 @@ npm install
   * Development mode
 
   ````bash
-  npm run start-dev
+  npm run start:watch
   ````
 
 ---
