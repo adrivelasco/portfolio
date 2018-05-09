@@ -1,10 +1,13 @@
 {
-  "extends": "tslint:recommended",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react"
+  ],
   "rules": {
     "max-line-length": {
       "options": [120]
     },
-    "quotemark": [true, "single"],
+    "quotemark": [true, "single", "jsx-double"],
     "no-unused-variable": true,
     "indent": [true, "spaces", 2],
     "trailing-comma": false,
@@ -19,11 +22,13 @@
       "object-destructuring",
       "array-destructuring"
     ],
+    "no-var-requires": false,
     "no-empty-interface": true,
     "no-magic-number": true,
     "no-any": true,
     "new-parens": true,
     "no-arg": true,
+    "object-literal-sort-keys": false,
     "no-bitwise": true,
     "no-conditional-assigment": true,
     "no-consecutive-blank-lines": false,
