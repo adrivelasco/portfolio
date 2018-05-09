@@ -2,6 +2,14 @@ const pkg = require('../package.json');
 
 module.exports = () => ({
   plugins: [
+    require('postcss-modules')({
+      getJSON: (cssFileName, json) => {
+        require('postcss-typescript-css')({
+          cssFileName: cssFileName,
+          content: json,
+        })();
+      }
+    }),
     require('postcss-global-import')(),
     require('postcss-import')(),
     require('postcss-custom-properties')(),

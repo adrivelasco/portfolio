@@ -4,8 +4,9 @@ require('dotenv').config();
 
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const AssetsPlugin = require('assets-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const pkg = require('../package.json');
 
 // Development
@@ -33,9 +34,7 @@ const config = {
   },
 
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-
-    modules: ['node_modules', './src/client']
+    modules: ['node_modules']
   },
 
   output: {
@@ -61,8 +60,8 @@ const config = {
 
   plugins: [
     // Extract all CSS files and compile it on a single file
-    new MiniCssExtractPlugin({
-      filename: __DEV__ ? '[name].css' : '[name].[contenthash:base64:8].css',
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash:base64:8].css',
       publicPath: '/static/css',
       allChunks: true
     }),
@@ -79,6 +78,15 @@ const config = {
       filename: 'assets.json',
       prettyPrint: true
     }),
+
+    // This copies all files that are not typescript from the typescript source folder to the build folder.
+    new CopyWebpackPlugin([
+      {
+        from: './',
+        to: '../client',
+        ignore: ['*.tsx', '*.ts']
+      }
+    ]),
 
     ...(__DEV__
       ? [
@@ -138,37 +146,40 @@ const config = {
       },
       // Rules for Style Sheets
       {
-        test: /\.css/,
+        test: reStyle,
         rules: [
           // Process internal/project styles (from client folder)
           {
             include: [path.resolve(__dirname, '../src/client')],
-            use: [
-              MiniCssExtractPlugin.loader,
-              {
-                loader: 'css-loader',
-                options: {
-                  importLoaders: 1,
-                  sourceMap: __DEV__,
-                  camelCase: 'dashes',
-                  modules: true,
-                  localIdentName: __DEV__
-                    ? '[name]-[local]-[hash:base64:5]'
-                    : '[hash:base64:5]',
-                  minimize: !__DEV__,
-                  discardComments: { removeAll: true }
-                }
-              },
-              // Apply PostCSS plugins including autoprefixer
-              {
-                loader: 'postcss-loader',
-                options: {
-                  config: {
-                    path: './tools/postcss/postcss.config.js'
+            use: ExtractTextPlugin.extract({
+              fallback: 'isomorphic-style-loader', // Convert CSS into JS module
+              use: [
+                // Process internal/project styles (from client folder)
+                {
+                  loader: 'css-loader',
+                  options: {
+                    importLoaders: 1,
+                    sourceMap: __DEV__,
+                    camelCase: 'dashes',
+                    modules: true,
+                    localIdentName: __DEV__
+                      ? '[name]-[local]-[hash:base64:5]'
+                      : '[hash:base64:5]',
+                    minimize: !__DEV__,
+                    discardComments: { removeAll: true }
+                  }
+                },
+                // Apply PostCSS plugins including autoprefixer
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    config: {
+                      path: './tools/postcss/postcss.config.js'
+                    }
                   }
                 }
-              }
-            ]
+              ]
+            })
           }
         ]
       },
