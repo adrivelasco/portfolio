@@ -8,9 +8,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 const pkg = require('../package.json');
 
+// Development
 const isDebug = !process.argv.includes('--env.production');
-const isVerbose = process.argv.includes('--verbose');
 
+// Files extensions
 const reTypeScript = /\.tsx?$/;
 const reScript = /\.(js|jsx|mjs)$/;
 const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
@@ -25,22 +26,37 @@ const config = {
 
   target: 'web',
 
+  mode: isDebug ? 'development' : 'production',
+
   entry: {
     client: ['babel-polyfill', './src/client/app.js']
   },
 
   resolve: {
-    // Add `.ts` and `.tsx` as a resolvable extension.
     extensions: ['.ts', '.tsx', '.js'],
 
-    modules: ['node_modules', 'client']
+    modules: ['node_modules', './src/client']
   },
 
   output: {
     path: path.resolve(__dirname, '../build/static'),
     publicPath: '/static/',
     filename: isDebug ? 'js/[name].js' : 'js/[name].[hash:8].js',
-    chunkFilename: isDebug ? 'js/[name].chunk.js' : 'js/[name].[hash:8].chunk.js'
+    chunkFilename: isDebug ? 'js/[name].js' : 'js/[name].[hash:8].js'
+  },
+
+  optimization: {
+    minimize: !isDebug,
+
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
+    }
   },
 
   plugins: [
@@ -64,12 +80,6 @@ const config = {
       prettyPrint: true
     }),
 
-    // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: module => /node_modules/.test(module.resource)
-    }),
-
     ...(isDebug
       ? [
         new webpack.NoEmitOnErrorsPlugin(),
@@ -78,24 +88,6 @@ const config = {
       : [
         // Decrease script evaluation time
         new webpack.optimize.ModuleConcatenationPlugin(),
-
-        // Minimize all JavaScript output of chunks
-        new webpack.optimize.UglifyJsPlugin({
-          sourceMap: true,
-          compress: {
-            screw_ie8: true,
-            warnings: isVerbose,
-            unused: true,
-            dead_code: true
-          },
-          mangle: {
-            screw_ie8: true
-          },
-          output: {
-            comments: false,
-            screw_ie8: true
-          }
-        })
       ])
   ],
   module: {
@@ -241,16 +233,16 @@ const config = {
 
   // Specify what bundle information gets displayed
   stats: {
-    cached: isVerbose,
-    cachedAssets: isVerbose,
-    chunks: isVerbose,
-    chunkModules: isVerbose,
+    cached: false,
+    cachedAssets: false,
+    chunks: false,
+    chunkModules: false,
     colors: true,
-    hash: isVerbose,
-    modules: isVerbose,
+    hash: false,
+    modules: false,
     reasons: isDebug,
     timings: true,
-    version: isVerbose
+    version: false
   }
 };
 
