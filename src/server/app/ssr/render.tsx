@@ -31,7 +31,9 @@ export interface IData {
 }
 
 export function renderHtml(markup: string, data: IData): string {
-  const html: string = ReactDOM.renderToStaticMarkup(<Html {...data}>{markup}</Html>);
+  const html: string = ReactDOM.renderToStaticMarkup(
+    <Html {...data}>{markup}</Html>
+  );
   return `<!doctype html>${html}`;
 }
 
