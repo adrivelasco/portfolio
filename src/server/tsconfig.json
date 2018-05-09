@@ -1,9 +1,5 @@
 {
   "compileOnSave": false,
-  "include": [
-    "client/*.ts",
-    "server/*.ts",
-  ],
   "exclude": [
     "node_modules"
   ],
@@ -12,14 +8,13 @@
     "allowJs": true,
     "target": "es6",
     "module": "commonjs",
-    "lib": ["es2015", "dom"],
+    "lib": [
+      "es2015",
+      "dom"
+    ],
     "moduleResolution": "node",
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,
     "jsx": "react"
-  },
-  "files": [
-    "./client/types/window.d.ts",
-    "./server/types/vendor.d.ts"
-  ]
+  }
 }

@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Provider, Store } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 

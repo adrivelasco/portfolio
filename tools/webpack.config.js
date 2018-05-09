@@ -4,15 +4,15 @@ require('dotenv').config();
 
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 const pkg = require('../package.json');
 
 // Development
-const isDebug = !process.argv.includes('--env.production');
+const __DEV__ = !process.argv.includes('--env.production');
 
 // Files extensions
-const reTypeScript = /\.tsx?$/;
+const reTypeScript = /\.(ts|tsx)$/;
 const reScript = /\.(js|jsx|mjs)$/;
 const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
 const reImage = /\.(bmp|gif|jpg|jpeg|png|svg)$/;
@@ -20,16 +20,16 @@ const reFont = /\.(eot|otf|ttf|woff|woff2)$/;
 const staticAssetName = '[name].[ext]';
 
 const config = {
-  context: path.resolve(__dirname, '..'),
+  context: path.resolve(__dirname, '../src/client'),
 
   name: 'client',
 
   target: 'web',
 
-  mode: isDebug ? 'development' : 'production',
+  mode: __DEV__ ? 'development' : 'production',
 
   entry: {
-    client: ['babel-polyfill', './src/client/app.js']
+    client: ['babel-polyfill', './app.tsx']
   },
 
   resolve: {
@@ -41,12 +41,12 @@ const config = {
   output: {
     path: path.resolve(__dirname, '../build/static'),
     publicPath: '/static/',
-    filename: isDebug ? 'js/[name].js' : 'js/[name].[hash:8].js',
-    chunkFilename: isDebug ? 'js/[name].js' : 'js/[name].[hash:8].js'
+    filename: __DEV__ ? 'js/[name].js' : 'js/[name].[hash:8].js',
+    chunkFilename: __DEV__ ? 'js/[name].js' : 'js/[name].[hash:8].js'
   },
 
   optimization: {
-    minimize: !isDebug,
+    minimize: !__DEV__,
 
     splitChunks: {
       cacheGroups: {
@@ -61,15 +61,15 @@ const config = {
 
   plugins: [
     // Extract all CSS files and compile it on a single file
-    new ExtractTextPlugin({
-      filename: isDebug ? '[name].css' : '[name].[contenthash:base64:8].css',
+    new MiniCssExtractPlugin({
+      filename: __DEV__ ? '[name].css' : '[name].[contenthash:base64:8].css',
       publicPath: '/static/css',
       allChunks: true
     }),
 
     // Define free variables
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
+      'process.env.NODE_ENV': __DEV__ ? '"development"' : '"production"',
       'process.env.BROWSER': true
     }),
 
@@ -80,7 +80,7 @@ const config = {
       prettyPrint: true
     }),
 
-    ...(isDebug
+    ...(__DEV__
       ? [
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.NamedModulesPlugin()
@@ -97,8 +97,8 @@ const config = {
       // Rules for TyprScript
       {
         test: reTypeScript,
-        use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: '/node_modules',
+        use: 'ts-loader'
       },
 
       // Rules for JS / JSX
@@ -110,7 +110,7 @@ const config = {
         ],
         loader: 'babel-loader',
         options: {
-          cacheDirectory: isDebug,
+          cacheDirectory: __DEV__,
           babelrc: false,
           presets: [
             [
@@ -118,7 +118,7 @@ const config = {
               {
                 targets: {
                   browsers: pkg.browserslist,
-                  forceAllTransforms: !isDebug
+                  forceAllTransforms: !__DEV__
                 },
                 modules: false,
                 useBuiltIns: false,
@@ -131,8 +131,8 @@ const config = {
           ],
           plugins: [
             'transform-decorators-legacy',
-            ...(isDebug ? ['transform-react-jsx-source'] : []),
-            ...(isDebug ? ['transform-react-jsx-self'] : [])
+            ...(__DEV__ ? ['transform-react-jsx-source'] : []),
+            ...(__DEV__ ? ['transform-react-jsx-self'] : [])
           ]
         }
       },
@@ -143,35 +143,32 @@ const config = {
           // Process internal/project styles (from client folder)
           {
             include: [path.resolve(__dirname, '../src/client')],
-            use: ExtractTextPlugin.extract({
-              fallback: 'isomorphic-style-loader', // Convert CSS into JS module
-              use: [
-                // Process internal/project styles (from client folder)
-                {
-                  loader: 'css-loader',
-                  options: {
-                    importLoaders: 1,
-                    sourceMap: isDebug,
-                    camelCase: 'dashes',
-                    modules: true,
-                    localIdentName: isDebug
-                      ? '[name]-[local]-[hash:base64:5]'
-                      : '[hash:base64:5]',
-                    minimize: !isDebug,
-                    discardComments: { removeAll: true }
-                  }
-                },
-                // Apply PostCSS plugins including autoprefixer
-                {
-                  loader: 'postcss-loader',
-                  options: {
-                    config: {
-                      path: './tools/postcss/postcss.config.js'
-                    }
+            use: [
+              MiniCssExtractPlugin.loader,
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                  sourceMap: __DEV__,
+                  camelCase: 'dashes',
+                  modules: true,
+                  localIdentName: __DEV__
+                    ? '[name]-[local]-[hash:base64:5]'
+                    : '[hash:base64:5]',
+                  minimize: !__DEV__,
+                  discardComments: { removeAll: true }
+                }
+              },
+              // Apply PostCSS plugins including autoprefixer
+              {
+                loader: 'postcss-loader',
+                options: {
+                  config: {
+                    path: './tools/postcss/postcss.config.js'
                   }
                 }
-              ]
-            })
+              }
+            ]
           }
         ]
       },
@@ -217,11 +214,11 @@ const config = {
   },
 
   // Don't attempt to continue if there are any errors.
-  bail: !isDebug,
-  cache: isDebug,
+  bail: !__DEV__,
+  cache: __DEV__,
 
   // Choose a developer tool to enhance debugging
-  devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
+  devtool: __DEV__ ? 'cheap-module-inline-source-map' : 'source-map',
 
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
@@ -240,7 +237,7 @@ const config = {
     colors: true,
     hash: false,
     modules: false,
-    reasons: isDebug,
+    reasons: __DEV__,
     timings: true,
     version: false
   }
