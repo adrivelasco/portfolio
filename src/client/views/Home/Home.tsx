@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 export class Home extends React.Component {
-  public render(): JSX.Element {
+  public render(): React.ReactNode {
     return (
       <div>
         Hello World! This is the homepage;

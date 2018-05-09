@@ -1,5 +1,3 @@
-// <reference path="./types/window.d.ts" />
-
 import 'babel-polyfill';
 
 import React from 'react';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export class Contact extends React.Component {
-  public render(): JSX.Element {
+  public render(): React.ReactNode {
     return (
       <div>
         Hello World! This is the homepage;

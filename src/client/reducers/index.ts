@@ -1,4 +1,4 @@
-import { combineReducers, Dispatch, Reducer } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 import { routerReducer, RouterState } from 'react-router-redux';
 
 export interface IApplicationState {

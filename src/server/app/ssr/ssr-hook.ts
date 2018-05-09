@@ -1,6 +1,12 @@
 import * as csmrh from 'css-modules-require-hook';
+import * as nhf from 'node-hook-filename';
 
 import config from '../../config';
+
+nhf([/\.jpg/, /\.png/, /\.svg/], (filename: string) => {
+  const name: string = filename.split('./')[1];
+  return `/static/images/${name}`;
+});
 
 csmrh({
   camelCase: 'dashes',

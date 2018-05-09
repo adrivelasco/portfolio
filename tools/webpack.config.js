@@ -26,7 +26,7 @@ const config = {
   target: 'web',
 
   entry: {
-    client: ['babel-polyfill', './client/app.js']
+    client: ['babel-polyfill', './src/client/app.js']
   },
 
   resolve: {
@@ -113,7 +113,7 @@ const config = {
       {
         test: reScript,
         include: [
-          path.resolve(__dirname, '../client'),
+          path.resolve(__dirname, '../src/client'),
           path.resolve(__dirname, '../tools')
         ],
         loader: 'babel-loader',
@@ -150,7 +150,7 @@ const config = {
         rules: [
           // Process internal/project styles (from client folder)
           {
-            include: [path.resolve(__dirname, '../client')],
+            include: [path.resolve(__dirname, '../src/client')],
             use: ExtractTextPlugin.extract({
               fallback: 'isomorphic-style-loader', // Convert CSS into JS module
               use: [
@@ -210,11 +210,6 @@ const config = {
       {
         test: /\.txt$/,
         loader: 'raw-loader'
-      },
-      // Convert Markdown into HTML
-      {
-        test: /\.md$/,
-        loader: path.resolve(__dirname, './lib/markdown-loader.js')
       },
       // Return public URL for all assets unless explicitly excluded
       // DO NOT FORGET to update `exclude` list when you adding a new loader
