@@ -15,6 +15,7 @@ Personal website by **Adrián Velasco** from _Argentina, Buenos Aires_.
 ````bash
 git clone git@github.com:adrivelasco/portfolio.git
 cd portfolio
+npm install -g nodemon webpack
 npm install
 ````
 
@@ -29,7 +30,8 @@ npm install
   * Development mode
 
   ````bash
-  npm run build:watch
+  npm run build-client:watch
+  npm run build-server:watch
   ````
 
 3. Start server [localhost:3002]
