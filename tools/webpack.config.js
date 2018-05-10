@@ -34,6 +34,8 @@ const config = {
   },
 
   resolve: {
+    extensions: ['.ts', '.tsx', '.jsx', '.js'],
+
     modules: ['node_modules']
   },
 
@@ -49,6 +51,10 @@ const config = {
 
     splitChunks: {
       cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2
+        },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendor',
@@ -59,24 +65,10 @@ const config = {
   },
 
   plugins: [
-    // Extract all CSS files and compile it on a single file
-    new ExtractTextPlugin({
-      filename: '[name].[contenthash:base64:8].css',
-      publicPath: '/static/css',
-      allChunks: true
-    }),
-
     // Define free variables
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': __DEV__ ? '"development"' : '"production"',
       'process.env.BROWSER': true
-    }),
-
-    // Emit a file with assets paths
-    new AssetsPlugin({
-      path: path.resolve(__dirname, '../build'),
-      filename: 'assets.json',
-      prettyPrint: true
     }),
 
     // This copies all files that are not typescript from the typescript source folder to the build folder.
@@ -87,6 +79,20 @@ const config = {
         ignore: ['*.tsx', '*.ts']
       }
     ]),
+
+    // Emit a file with assets paths
+    new AssetsPlugin({
+      path: path.resolve(__dirname, '../build'),
+      filename: 'assets.json',
+      prettyPrint: true
+    }),
+
+    // Extract all CSS files and compile it on a single file
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash:base64:8].css',
+      publicPath: '/static/css',
+      allChunks: true
+    }),
 
     ...(__DEV__
       ? [
@@ -101,10 +107,16 @@ const config = {
   module: {
     // Make missing exports an error instead of warning
     strictExportPresence: true,
+    
     rules: [
+      {
+        test: /\.tsx$/,
+        exclude: '/node_modules',
+        loader: 'babel-loader!ts-loader'
+      },
       // Rules for TyprScript
       {
-        test: reTypeScript,
+        test: /\.ts$/,
         exclude: '/node_modules',
         use: 'ts-loader'
       },
@@ -150,7 +162,6 @@ const config = {
         rules: [
           // Process internal/project styles (from client folder)
           {
-            include: [path.resolve(__dirname, '../src/client')],
             use: ExtractTextPlugin.extract({
               fallback: 'isomorphic-style-loader', // Convert CSS into JS module
               use: [
