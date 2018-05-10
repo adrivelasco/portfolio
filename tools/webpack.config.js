@@ -27,10 +27,8 @@ const config = {
 
   target: 'web',
 
-  mode: __DEV__ ? 'development' : 'production',
-
   entry: {
-    client: ['babel-polyfill', './app.tsx']
+    client: './app.tsx'
   },
 
   resolve: {
@@ -44,25 +42,6 @@ const config = {
     publicPath: '/static/',
     filename: __DEV__ ? 'js/[name].js' : 'js/[name].[hash:8].js',
     chunkFilename: __DEV__ ? 'js/[name].js' : 'js/[name].[hash:8].js'
-  },
-
-  optimization: {
-    minimize: !__DEV__,
-
-    splitChunks: {
-      name: true,
-      cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'all'
-        }
-      }
-    }
   },
 
   plugins: [
@@ -95,6 +74,12 @@ const config = {
       prettyPrint: true
     }),
 
+    // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: module => /node_modules/.test(module.resource)
+    }),
+
     ...(__DEV__
       ? [
         new webpack.NoEmitOnErrorsPlugin(),
@@ -103,6 +88,24 @@ const config = {
       : [
         // Decrease script evaluation time
         new webpack.optimize.ModuleConcatenationPlugin(),
+
+        // Minimize all JavaScript output of chunks
+        new webpack.optimize.UglifyJsPlugin({
+          sourceMap: true,
+          compress: {
+            screw_ie8: true,
+            warnings: isVerbose,
+            unused: true,
+            dead_code: true
+          },
+          mangle: {
+            screw_ie8: true
+          },
+          output: {
+            comments: false,
+            screw_ie8: true
+          }
+        })
       ])
   ],
   module: {
@@ -112,7 +115,8 @@ const config = {
     rules: [
       // Rules for TyprScript
       {
-        test: /\.tsx$/,
+        test: reTypeScript,
+        exclude: '/node_modules',
         use: __DEV__ ? ['babel-loader', 'ts-loader'] : 'ts-loader'
       },
 
@@ -158,7 +162,7 @@ const config = {
           // Process internal/project styles (from client folder)
           {
             use: ExtractTextPlugin.extract({
-              fallback: 'style-loader', // Convert CSS into JS module
+              fallback: 'isomorphic-style-loader', // Convert CSS into JS module
               use: [
                 // Process internal/project styles (from client folder)
                 {
