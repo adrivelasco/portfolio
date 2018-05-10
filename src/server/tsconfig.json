@@ -1,22 +1,25 @@
 {
   "compileOnSave": false,
   "exclude": [
-    "node_modules",
-    "../client"
+    "node_modules"
   ],
   "compilerOptions": {
     "outDir": "../../build",
     "noImplicitAny": true,
     "allowJs": true,
     "target": "es6",
+    "moduleResolution": "node",
     "module": "commonjs",
     "lib": [
       "es2015",
       "dom"
     ],
-    "moduleResolution": "node",
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,
     "jsx": "react"
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true,
+    "useBabel": true
   }
 }
