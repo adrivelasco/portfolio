@@ -1,25 +1,8 @@
 {
-  "compileOnSave": false,
-  "exclude": [
-    "node_modules"
-  ],
+  "extends": "../client/tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../build",
-    "noImplicitAny": true,
-    "allowJs": true,
-    "target": "es6",
-    "moduleResolution": "node",
     "module": "commonjs",
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "sourceMap": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "jsx": "react"
-  },
-  "awesomeTypescriptLoaderOptions": {
-    "useCache": true,
-    "useBabel": true
+    "outDir": "../../build",
+    "noUnusedParameters": false
   }
 }

@@ -1,19 +1,20 @@
 {
   "compileOnSave": false,
-  "exclude": [
-    "node_modules",
-    "build"
-  ],
+  "exclude": ["node_modules", "build"],
   "compilerOptions": {
     "noImplicitAny": true,
     "allowJs": true,
     "target": "es6",
     "moduleResolution": "node",
     "module": "commonjs",
-    "lib": ["es2015", "dom"],
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,
-    "jsx": "react"
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016"
+    ]
   },
   "awesomeTypescriptLoaderOptions": {
     "useCache": true,
