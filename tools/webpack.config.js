@@ -50,6 +50,7 @@ const config = {
     minimize: !__DEV__,
 
     splitChunks: {
+      name: true,
       cacheGroups: {
         commons: {
           chunks: 'initial',
@@ -65,6 +66,13 @@ const config = {
   },
 
   plugins: [
+    // Extract all CSS files and compile it on a single file
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash:base64:8].css',
+      publicPath: '/static/css',
+      allChunks: true
+    }),
+
     // Define free variables
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': __DEV__ ? '"development"' : '"production"',
@@ -87,13 +95,6 @@ const config = {
       prettyPrint: true
     }),
 
-    // Extract all CSS files and compile it on a single file
-    new ExtractTextPlugin({
-      filename: '[name].[contenthash:base64:8].css',
-      publicPath: '/static/css',
-      allChunks: true
-    }),
-
     ...(__DEV__
       ? [
         new webpack.NoEmitOnErrorsPlugin(),
@@ -109,16 +110,10 @@ const config = {
     strictExportPresence: true,
     
     rules: [
-      {
-        test: /\.tsx$/,
-        exclude: '/node_modules',
-        loader: 'babel-loader!ts-loader'
-      },
       // Rules for TyprScript
       {
-        test: /\.ts$/,
-        exclude: '/node_modules',
-        use: 'ts-loader'
+        test: /\.tsx$/,
+        use: __DEV__ ? ['babel-loader', 'ts-loader'] : 'ts-loader'
       },
 
       // Rules for JS / JSX
@@ -163,7 +158,7 @@ const config = {
           // Process internal/project styles (from client folder)
           {
             use: ExtractTextPlugin.extract({
-              fallback: 'isomorphic-style-loader', // Convert CSS into JS module
+              fallback: 'style-loader', // Convert CSS into JS module
               use: [
                 // Process internal/project styles (from client folder)
                 {
@@ -254,7 +249,7 @@ const config = {
   stats: {
     cached: false,
     cachedAssets: false,
-    chunks: false,
+    chunks: __DEV__,
     chunkModules: false,
     colors: true,
     hash: false,
